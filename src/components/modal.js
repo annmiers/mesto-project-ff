@@ -1,17 +1,19 @@
-export {openModal, closeModal, keyPressEsc, handleClickClose };
+export {openModal, closeModal, handleClickClose };
 
 //Функция окрытия модального окна
 function openModal(popup) {
     popup.classList.add('popup_is-opened');
+    document.addEventListener('keydown', handleCloseByEsc);
 }
 
 //Функция закрытия модального окна
 function closeModal(popup) {
     popup.classList.remove('popup_is-opened');
+    document.removeEventListener('keydown', handleCloseByEsc);
 }
 
 //Функция закрытия модального окна по клавише ескейп
-function keyPressEsc (evt) {
+function handleCloseByEsc (evt) {
     if (evt.key === 'Escape') {
         const openedPopup = document.querySelector('.popup_is-opened');
         closeModal(openedPopup);
@@ -24,5 +26,4 @@ function handleClickClose (evt) {
         const openedPopup = document.querySelector('.popup_is-opened');
         closeModal(openedPopup);
     }
-    document.removeEventListener('keydown', keyPressEsc);
 }

@@ -43,8 +43,6 @@ function onImageClick(cardTitle, cardImage){
 //Функция добавления новой карточки через форму
 function handleCardAdd(cardNameValue, cardLinkValue) {
   const cardElementNew = createCard(cardNameValue, cardLinkValue, removeCard, onImageClick, like);
-  cardElementNew.querySelector('.card__title').textContent = cardNameValue;
-  cardElementNew.querySelector('.card__image').src = cardLinkValue;
   cardsContainer.prepend(cardElementNew);
   closeModal(popupAdd);
   formElementCard.reset();
@@ -72,8 +70,8 @@ popupModals.forEach (popup => {
 popupAddButton.addEventListener('click', () => openModal(popupAdd));
 
 popupEditButton.addEventListener('click', function() {
-  nameInput.value = document.querySelector('.profile__title').textContent;
-  jobInput.value = document.querySelector('.profile__description').textContent;
+  nameInput.value = profileTitle.textContent;
+  jobInput.value = profileDescription.textContent;
   openModal(popupEdit);
 });
 

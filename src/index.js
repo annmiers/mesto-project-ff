@@ -13,7 +13,6 @@ import { getUserData, getInitialCards, updateUserData, createNewCard, updateAvat
 
 //Переменные юзера и карточки
 let userId;
-let currentCard;
 
 //Настройки валидации
 const validationConfig = {
@@ -70,8 +69,9 @@ Promise.all([getUserData(), getInitialCards()])
     profileDescription.textContent = userData.about;
     profileImage.style.backgroundImage = `url(${userData.avatar})`;
     userId = userData._id;
+    console.log(cards);
     cards.forEach (item => {
-      currentCard = createCard(item, removeCard, onImageClick, like, userId);
+      const currentCard = createCard(item, removeCard, onImageClick, like, userId);
       addCard(currentCard);
     })
   })
@@ -108,7 +108,11 @@ function handleCardAdd(cardName, cardLink, button) {
 //Функция изменения профиля
 function handleProfileEditFormSubmit(nameInput, jobInput, profileTitle, profileDescription, button) {
   renderLoading(true, button);
-  updateUserData(nameInput, jobInput, profileTitle, profileDescription)
+  updateUserData(nameInput, jobInput)
+    .then(() => {
+      profileTitle.textContent = nameInput;
+      profileDescription.textContent = jobInput;
+    })
     .catch((err) => {
       console.log(err);
     })
@@ -121,7 +125,10 @@ function handleProfileEditFormSubmit(nameInput, jobInput, profileTitle, profileD
 //Функция изменения аватара
 function handleProfileEditAvatarFormSubmit(profileImageInput, profileImage, button) {
   renderLoading(true, button);
-  updateAvatar(profileImageInput, profileImage)
+  updateAvatar(profileImageInput)
+    .then(() => {
+      profileImage.style.backgroundImage = `url(${profileImageInput})`;
+    })
     .catch((err) => {
       console.log(err);
     })
@@ -133,12 +140,7 @@ function handleProfileEditAvatarFormSubmit(profileImageInput, profileImage, butt
 
 //Функция для отображения загрузки
 function renderLoading(isLoading, button) {
-  if (isLoading) {
-    button.textContent = 'Сохранение...';
-  }
-  else {
-    button.textContent = 'Сохранить';
-  }
+  button.textContent = isLoading ? 'Сохранение...' : 'Сохранить';
 }
 
 //Обработчики попапов
